@@ -13,6 +13,16 @@ buildscript {
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
+
+    ext{
+        retrofitVersion = "2.4.0"
+        recyclerviewVersion = "1.0.0"
+        glideVersion = "4.8.0"
+        rxjavaVersion = "2.1.0"
+        lifecycleVersion = "1.1.1"
+        gsonVersion = "2.4.0"
+        okhttpVersion = "3.9.1"
+    }
 }
 
 allprojects {
