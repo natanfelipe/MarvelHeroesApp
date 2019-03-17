@@ -1,6 +1,7 @@
 package com.natanbrito.marvelheroesapp.ui.view
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -25,7 +26,7 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var charactersAdapter: CharactersAdapter
 
-    private lateinit var charactersViewModel : CharactersViewModel
+    private lateinit var charactersViewModel: CharactersViewModel
 
     private var charactersList = MutableLiveData<List<Characters>>()
 
@@ -57,9 +58,35 @@ class MainActivity : AppCompatActivity() {
         if (utils.hasInternetConnection(this)) {
             charactersList.observe(this, Observer { characters ->
                 charactersAdapter.setCharactersList(characters)
+                isLoaded(true)
             })
 
             charactersAdapter.notifyDataSetChanged()
+        } else {
+            isLoaded(false)
+        }
+    }
+
+    private fun isLoaded(loaded: Boolean) {
+        if (loaded) {
+            progressbar.visibility = View.GONE
+            errorMessage.visibility = View.GONE
+            charactersRecyclerView.visibility = View.VISIBLE
+        } else {
+            progressbar.visibility = View.GONE
+            errorMessage.visibility = View.VISIBLE
+            charactersRecyclerView.visibility = View.GONE
+
+            displayErrorMessage()
+        }
+
+    }
+
+    private fun displayErrorMessage() {
+        if (utils.hasInternetConnection(this)) {
+            errorMessage.text = getString(R.string.lb_sem_personagens)
+        } else {
+            errorMessage.text = getString(R.string.lb_sem_conexao)
         }
     }
 }

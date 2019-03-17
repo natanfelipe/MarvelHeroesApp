@@ -3,4 +3,6 @@
     <string name="lb_character_name">character name</string>
     <string name="lb_character_image">Character image</string>
     <string name="ratio_vertical">9:16</string>
+    <string name="lb_sem_personagens">Não há personagens para serem carregados na lista</string>
+    <string name="lb_sem_conexao">Você está offline. Favor verificar a conexão com a internet</string>
 </resources>

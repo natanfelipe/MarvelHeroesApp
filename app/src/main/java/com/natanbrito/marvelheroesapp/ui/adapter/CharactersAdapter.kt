@@ -34,11 +34,10 @@ class CharactersAdapter : RecyclerView.Adapter<CharactersAdapter.CharactersViewH
         holder.bind(character)
     }
 
-    var utils: Utils = Utils()
 
     class CharactersViewHolder(@NotNull itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(character: Characters) {
 
+        fun bind(character: Characters) {
             var characterThumbnail = character.thumbnail.path+"."+character.thumbnail.extension
             characterThumbnail = characterThumbnail.replace("http","https")
             Glide.with(itemView)
@@ -46,7 +45,9 @@ class CharactersAdapter : RecyclerView.Adapter<CharactersAdapter.CharactersViewH
                 .apply(RequestOptions().placeholder(R.drawable.ic_launcher_background))
                 .into(itemView.characterImage)
 
+
             itemView.characterName.text = character.name
+
 
             //itemView.setOnClickListener { v -> onItemClickListener.onItemClick(character) }
         }
