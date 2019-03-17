@@ -1,3 +1,13 @@
 # MarvelHeroesApp
 
-This app displays a list of heroes from Marvel where you can check some details about them.
+This app contains a list of characters from marvel api as you can see on the image below:
+
+
+
+Libraries used to build the app:
+
+- Retrofit;
+- Architecture components (LiveData+ViewModel)
+- RxJava;
+- Glide
+- OkHttp.
