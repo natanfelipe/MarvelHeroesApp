@@ -24,9 +24,9 @@ android {
     }
 
     buildTypes.each {
-        it.buildConfigField "String", "BASE_URL", "https://gateway.marvel.com:443/v1/public/"
-        it.buildConfigField "String", "API_KEY", marvelApiKey
-        it.buildConfigField "String", "HASH", "f12f007e1cfd427ef48aea106485d6ae"
+        it.buildConfigField "String", "BASE_URL", '"https://gateway.marvel.com:443/v1/public/"'
+        it.buildConfigField "String", "PUBLIC_API_KEY", marvelPublicApiKey
+        it.buildConfigField "String", "PRIVATE_API_KEY", marvelPrivateApiKey
     }
 }
 
