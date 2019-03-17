@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">MarvelHeroesApp</string>
+    <string name="lb_character_name">character name</string>
+    <string name="lb_character_image">Character image</string>
+    <string name="ratio_vertical">9:16</string>
 </resources>
