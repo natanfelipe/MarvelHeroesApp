@@ -14,6 +14,8 @@ import com.natanbrito.marvelheroesapp.model.Characters
 import com.natanbrito.marvelheroesapp.ui.adapter.CharactersAdapter
 import com.natanbrito.marvelheroesapp.utils.Utils
 import com.natanbrito.marvelheroesapp.viewmodel.CharactersViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -26,7 +28,9 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var charactersAdapter: CharactersAdapter
 
-    private lateinit var charactersViewModel: CharactersViewModel
+     val charactersViewModel: CharactersViewModel by lazy {
+        ViewModelProviders.of(this).get(CharactersViewModel::class.java)
+    }
 
     private var charactersList = MutableLiveData<List<Characters>>()
 
@@ -37,7 +41,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        charactersViewModel = ViewModelProviders.of(this).get(CharactersViewModel::class.java)
 
         initRecyclerView()
 
@@ -53,18 +56,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getAllCharacters() {
-        charactersViewModel.getAllCharacters(this, ts, BuildConfig.PUBLIC_API_KEY, hash, charactersList)
 
-        if (utils.hasInternetConnection(this)) {
-            charactersList.observe(this, Observer { characters ->
-                charactersAdapter.setCharactersList(characters)
+        charactersViewModel.charactersList
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                characters -> charactersAdapter.submitList(characters)
                 isLoaded(true)
-            })
+            },{isLoaded(false)})
 
-            charactersAdapter.notifyDataSetChanged()
-        } else {
-            isLoaded(false)
-        }
+        charactersAdapter.notifyDataSetChanged()
     }
 
     private fun isLoaded(loaded: Boolean) {

@@ -2,6 +2,7 @@ package com.natanbrito.marvelheroesapp.datasource
 
 import com.natanbrito.marvelheroesapp.BuildConfig
 import com.natanbrito.marvelheroesapp.datasource.api.MarvelApi
+import com.natanbrito.marvelheroesapp.utils.Utils
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -16,8 +17,10 @@ import java.util.concurrent.TimeUnit
 
 class RestApiTask {
 
-    private var okHttpClient: OkHttpClient = OkHttpClient()
+    private lateinit var okHttpClient: OkHttpClient
     private lateinit var retrofit: Retrofit
+    private var utils = Utils()
+
 
 
     fun configure(): MarvelApi {
@@ -34,17 +37,24 @@ class RestApiTask {
 
 
     fun getOkHttpClient(): OkHttpClient {
-        if (okHttpClient != null)
-            return okHttpClient
+        /*if (okHttpClient != null)
+            return okHttpClient*/
 
         val clientBuilder = OkHttpClient.Builder()
-        clientBuilder.addInterceptor(object : Interceptor {
-            @Throws(IOException::class)
-            override fun intercept(chain: Interceptor.Chain): Response {
-                val request = chain.request()
-                return chain.proceed(request)
-            }
-        })
+        clientBuilder.addInterceptor {
+                chain ->
+            val original = chain.request()
+            val originalHttpUrl = original.url()
+
+            val ts = (Calendar.getInstance(TimeZone.getTimeZone("UTC")).timeInMillis/1000L).toString()
+            val url = originalHttpUrl.newBuilder()
+                .addQueryParameter("apikey",BuildConfig.PUBLIC_API_KEY)
+                .addQueryParameter("ts",ts)
+                .addQueryParameter("hash",utils.getHash(ts))
+                .build()
+
+            chain.proceed(original.newBuilder().url(url).build())
+        }
 
         clientBuilder.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
         clientBuilder.connectTimeout(120, TimeUnit.SECONDS).readTimeout(120, TimeUnit.SECONDS)
