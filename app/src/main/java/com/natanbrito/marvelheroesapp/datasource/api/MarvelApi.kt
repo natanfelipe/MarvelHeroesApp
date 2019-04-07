@@ -10,9 +10,7 @@ interface MarvelApi {
     @GET("characters")
 
     fun charactersList(
-        @Query("ts") ts: String,
-        @Query("apikey") key: String,
-        @Query("hash") hash: String
+        @Query("offset") offset: Int
     ): Observable<Info>
 
 }
